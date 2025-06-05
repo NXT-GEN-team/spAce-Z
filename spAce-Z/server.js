@@ -1,15 +1,13 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const routes = require('./routes/index');
 
-// Import routes
-const indexRoutes = require('./routes/index');
-
-// Set EJS as the view engine
 app.set('view engine', 'ejs');
 
-// Use routes
-app.use('/', indexRoutes);
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/', routes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
