@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>spAce-Z</title>
+  <link rel="stylesheet" href="/homepage.css" />
+  
+  <!-- Tailwind for optional enhancement (remove if you're using raw CSS) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom canvas style -->
+  <style>
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+    .wrapper {
+      position: relative;
+      z-index: 10;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 3D Starfield Canvas -->
+  <canvas id="bg"></canvas>
+
+  <div class="wrapper">
+    <header>
+
+      <div class="title">
+        <h1>spAce-Z</h1>
+        <p>some cool quote about this website here.</p>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="module module-left">
+        <h1>Astronomy & Imagery</h1>
+      </div>
+      <div class="module module-right">
+        <h1>Space Objects & Events</h1>
+      </div>
+      <div class="module module-left">
+        <h1>Missions & Data Repositories</h1>
+      </div>
+      <div class="module module-right">
+        <h1>Earth Science & Environmental Data</h1>
+      </div>
+      <div class="module module-left">
+        <h1>Scientific Research & Data</h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- Three.js & Starfield -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+  <script src="/js/starfield.js"></script>
+</body>
+</html>
