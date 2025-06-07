@@ -1,18 +1,9 @@
-/* body{
-    background-color: black;
-
-} */
 
 img {
     width: 100vw;
     max-width: 100%;
 }
-.wrapper{
-    height: 100vh;
-    overflow: auto;
-    overflow-x: hidden;
-    perspective: 20px;
-}
+
 
 header{
     position: relative;

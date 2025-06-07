@@ -140,7 +140,7 @@ window.addEventListener('load', () => {
                 this.targetY = this.mouseY * 0.001;
 
                 // Scroll effect
-                this.scrollY += (this.targetScrollY - this.scrollY) * 0.1;
+                this.scrollY += (this.targetScrollY - this.scrollY) * 0.0001;
 
                 // Apply rotations
                 this.stars.rotation.y += 0.0005;
