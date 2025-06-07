@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>spAce-Z</title>
+    <link rel="stylesheet" href="/homepage.css">
+    <style>
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            background-color: #000;
+        }
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 100%;
+            padding: 20px;
+        }
+        .title {
+            text-align: center;
+            padding: 40px 0;
+        }
+        .title h1, .title p {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            padding: 20px 0;
+        }
+        .module {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            width: 80%;
+            max-width: 600px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .module:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+        .module h1 {
+            color: #fff;
+            margin: 0;
+            font-size: 1.8em;
+        }
+        .module-left {
+            align-self: flex-start;
+            margin-left: 5%;
+        }
+        .module-right {
+            align-self: flex-end;
+            margin-right: 5%;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 40px 0;
+        }
+        .aboutus {
+            text-align: center;
+            padding: 40px 0;
+        }
+        .aboutus h1 {
+            color: aliceblue;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <div class="title">
+                <h1>spAce-Z</h1>
+                <p>some cool quote about this website here.</p>
+            </div>
+        </header>
+        <div class="content">
+            <div class="module module-left">
+                <h1>Astronomy & Imagery</h1>
+            </div>
+            <div class="module module-right">
+                <h1>Space Objects & Events</h1>
+            </div>
+            <div class="module module-left">
+                <h1>Missions & Data Repositories</h1>
+            </div>
+            <div class="module module-right">
+                <h1>Earth Science & Environmental Data</h1>
+            </div>
+            <div class="module module-left">
+                <h1>Scientific Research & Data</h1>
+            </div>
+        </div>
+        <hr>
+        <footer>
+            <div class="aboutus">
+                <h1>about us</h1>
+            </div>
+        </footer>
+    </div>
+    <!-- Load Three.js first -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Then load our starfield script -->
+    <script src="/starfield.js"></script>
+    <script>
+        // Add a check to verify Three.js is loaded
+        window.addEventListener('load', () => {
+            if (typeof THREE === 'undefined') {
+                console.error('Three.js failed to load!');
+            } else {
+                console.log('Three.js loaded successfully');
+            }
+        });
+    </script>
+</body>
+</html>
