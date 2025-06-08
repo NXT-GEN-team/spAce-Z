@@ -1,11 +1,19 @@
-
+body {
+    margin: 0;
+    overflow-x: hidden;
+    background-color: #000;
+}
+.wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 100%;
+    padding: 20px;
+}
 img {
     width: 100vw;
     max-width: 100%;
 }
-
-
-header{
+header {
     position: relative;
     display: flex;
     justify-content: center;
@@ -14,79 +22,97 @@ header{
     transform-style: preserve-3d;
     z-index: -1;
 }
-
 .b1,
 .b2,
-.b3{
+.b3 {
     position: absolute;
     object-fit: cover;
     z-index: -1;
 }
-
-.b1{
+.b1 {
     transform: translateZ(-20px) scale(2);
-
 }
-
-.b2{
+.b2 {
     transform: translateZ(-7px);
-
 }
-
-.b3{
-    transform: translateZ(-1px)
+.b3 {
+    transform: translateZ(-1px);
 }
-
-.title{
+.title {
+    text-align: center;
+    padding: 40px 0;
     font-size: 2rem;
     color: aliceblue;
     text-shadow: 0 0 5px rgb(0, 208, 255);
 }
-
-.title p{
+.title h1 {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    margin: 0;
+}
+.title p {
+    color: aliceblue;
+    text-shadow: 0 0 5px rgb(0, 208, 255);
+    font-size: 1rem;
+}
+.q {
     font-size: 1rem;
     color: aliceblue;
     text-shadow: 0 0 5px rgb(0, 208, 255);
 }
-
-.q{
-    font-size: 1rem;
-    color: aliceblue;
-    text-shadow: 0 0 5px rgb(0, 208, 255);
-}
-
-.content{
-    display: flex;
-    color: aliceblue;
-    text-shadow: 0 0 3px rgb(0, 255, 106);
-}
-
 .content {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    padding: 20px 0;
+    color: aliceblue;
+    text-shadow: 0 0 3px rgb(0, 255, 106);
     width: 100vw;
 }
-
 .module {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     min-height: 150px;
-    background: #222;
-    color: #fff;
+    background: rgba(0, 0, 0, 0.681);
+    backdrop-filter: blur(0.1px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 1rem 2rem;
+    width: 40vw;
+    max-width: 600px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin: 50px;
-    width: 30vw;
 }
-
+.module:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+.module h1 {
+    color: #fff;
+    margin: 0;
+    font-size: 1.8em;
+}
 .module-left {
-    margin-left: 0;
-    margin-right: auto; 
+    align-self: flex-start;
+    margin-left: 3%;
+    margin-right: auto;
 }
-
 .module-right {
+    align-self: flex-end;
     margin-left: auto;
-    margin-right: 0;
+    margin-right: 3%;
+}
+hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 40px 0;
+}
+.aboutus {
+    text-align: center;
+    padding: 40px 0;
+}
+.aboutus h1 {
+    color: aliceblue;
+    margin: 0;
 }
