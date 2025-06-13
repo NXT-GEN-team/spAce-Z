@@ -120,7 +120,7 @@ window.addEventListener('load', () => {
         }
 
         onDocumentScroll() {
-            this.targetScrollY = window.scrollY * 0.0005;
+            this.targetScrollY = window.scrollY * 0.0001;
         }
 
         onWindowResize() {

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>spAce-Z</title>
+    <link rel="stylesheet" href="/homepage.css">
+
+</head>
+<body>
+        <header>
+            <div class="title">
+                <h1>spAce-Z</h1>
+                <p>Explore the news amoung the stars</p>
+            </div>
+        </header>
+        <div class="content">
+            <a href="/astro" style="text-decoration: none; color: inherit;">
+                <div class="module module-left">
+                    <h1>Astronomy & Imagery</h1>
+                </div>
+            </a>
+            <a href="/space-objects" style="text-decoration: none; color: inherit;">
+                <div class="module module-right">
+                    <h1>Space Objects & Events</h1>
+                </div>
+            </a>
+            <a href="/missions" style="text-decoration: none; color: inherit;">
+                <div class="module module-left">
+                    <h1>Missions & Data Repositories</h1>
+                </div>
+            </a>
+            <a href="/earth" style="text-decoration: none; color: inherit;">
+                <div class="module module-right">
+                    <h1>Earth Science & Environmental Data</h1>
+                </div>
+            </a>
+            <a href="/research" style="text-decoration: none; color: inherit;">
+                <div class="module module-left">
+                    <h1>Scientific Research & Data</h1>
+                </div>
+            </a>
+        </div>
+        <hr>
+        <footer>
+            <div class="aboutus">
+                <h1>about us</h1>
+            </div>
+        </footer>
+    <!-- Load Three.js first -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Then load our starfield script -->
+    <script src="/starfield.js"></script>
+    <script>
+        // Add a check to verify Three.js is loaded
+        window.addEventListener('load', () => {
+            if (typeof THREE === 'undefined') {
+                console.error('Three.js failed to load!');
+            } else {
+                console.log('Three.js loaded successfully');
+            }
+        });
+    </script>
+    <script>
+        const modules = document.querySelectorAll('.module');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                } else {
+                    entry.target.classList.remove('in-view');
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        modules.forEach(module => observer.observe(module));
+    </script>
+
+
+</body>
+</html>

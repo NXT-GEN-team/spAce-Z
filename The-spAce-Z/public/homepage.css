@@ -1,7 +1,6 @@
 body {
     margin: 0;
     overflow-x: hidden;
-    background-color: #000;
 }
 .wrapper {
     position: relative;
@@ -14,13 +13,10 @@ img {
     max-width: 100%;
 }
 header {
-    position: relative;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    transform-style: preserve-3d;
-    z-index: -1;
 }
 .b1,
 .b2,
@@ -81,12 +77,18 @@ header {
     padding: 1rem 2rem;
     width: 40vw;
     max-width: 600px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.6s ease, box-shadow 0.6s ease;
     margin: 50px;
 }
 .module:hover {
     transform: scale(1.02);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.766);
+    background-color: rgb(164, 208, 160);
+}
+.module:hover h1{
+    color: #000000;
+    margin: 0;
+    font-size: 1.8em;
 }
 .module h1 {
     color: #fff;
@@ -115,4 +117,25 @@ hr {
 .aboutus h1 {
     color: aliceblue;
     margin: 0;
+}
+
+/* Common styles to be animated */
+.module {
+    opacity: 0;
+    transform: translateX(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* When in view */
+.module.in-view {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Direction-specific off-screen positions */
+.module-left {
+    transform: translateX(-100px);
+}
+.module-right {
+    transform: translateX(100px);
 }
