@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missions & Data Repositories</title>
+    <link rel="stylesheet" href="/homepage.css">
+</head>
+<body>
+    <header>
+        <div class="title">
+            <h1>Missions & Data Repositories</h1>
+        </div>
+    </header>
+
+    
+    <div class="content">
+        <a href="/missions/techport" style="text-decoration: none; color: inherit;">
+        <div class="module module-left" onclick="toggleModule(this)">
+            <h1>NASA TechPort API</h1>
+        </div>
+        </a>
+
+        <a href="/missions/mars" style="text-decoration: none; color: inherit;">
+            <div class="module module-right" onclick="toggleModule(this)">
+                <h1>Mars Rover Photos API</h1>
+            </div>
+        </a>
+
+
+        <a href="/missions/exo" style="text-decoration: none; color: inherit;">
+            <div class="module module-left" onclick="toggleModule(this)">
+                <h1>Exoplanet Archive API</h1>
+            </div>
+        </a>
+
+    </div>
+
+    <!-- Load Three.js first -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Then load our starfield script -->
+    <script src="/starfield.js"></script>
+    <script>
+        function toggleModule(module) {
+            module.classList.toggle('active');
+        }
+
+        // Add intersection observer for animations
+        const modules = document.querySelectorAll('.module');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                } else {
+                    entry.target.classList.remove('in-view');
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        modules.forEach(module => observer.observe(module));
+    </script>
+</body>
+</html>

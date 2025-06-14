@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Planetary Data System (PDS)</title>
+  <link rel="stylesheet" href="/homepage.css">
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; color: #fff; background: radial-gradient(ellipse at center, #111 0%, #000 100%); }
+    h1, h2 { text-align: center; color: #8ef; }
+    form { text-align: center; margin-bottom: 2rem; }
+    input { padding: 0.6rem 1rem; margin: 0.5rem; border-radius: 8px; border: none; }
+    button { padding: 0.6rem 1rem; background: #0ff; color: #000; border: none; border-radius: 8px; cursor: pointer; }
+    .card { background: rgba(255,255,255,0.05); margin: 1rem auto; padding: 1rem; border-radius: 12px; width: 80%; color: #fff; border: 1px solid #444; }
+    .error { text-align: center; color: red; }
+    a { color: #0ff; text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <h1>Planetary Data System (PDS)</h1>
+  <form method="GET" action="/earth/pds">
+    <input type="text" name="query" placeholder="e.g. mars, moon, apollo" required value="<%= query || '' %>">
+    <button type="submit">Search</button>
+  </form>
+
+  <% if (error) { %>
+    <p class="error"><%= error %></p>
+  <% } else if (results && results.length > 0) { %>
+    <h2>🔍 Results for "<%= query %>"</h2>
+    <% results.forEach(item => { %>
+      <div class="card">
+        <strong>📁 Title:</strong> <%= item.title %><br>
+        <% if (item.target) { %><strong>🪐 Target:</strong> <%= item.target %><br><% } %>
+        <% if (item.instrument) { %><strong>🔬 Instrument:</strong> <%= item.instrument %><br><% } %>
+        <% if (item.investigation_name) { %><strong>🚀 Mission:</strong> <%= item.investigation_name %><br><% } %>
+      </div>
+    <% }) %>
+  <% } else if (query) { %>
+    <p class="error">No results found for "<%= query %>". Try another keyword.</p>
+  <% } else { %>
+    <p style="text-align:center;">Start by searching for a mission, target, or instrument (e.g. "Mars", "Apollo", "Cassini").</p>
+  <% } %>
+
+</body>
+</html>

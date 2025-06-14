@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NASA TechPort</title>
+  <link rel="stylesheet" href="/homepage.css">
+  <style>
+    body {
+      background: #000;
+      color: aliceblue;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+    }
+    header {
+      height: auto;
+      padding: 2rem;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+    }
+    header h1 {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    header a {
+      color: aliceblue;
+      text-decoration: none;
+      text-shadow: 0 0 5px rgb(0, 208, 255);
+      display: inline-block;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+    }
+    header a:hover {
+      color: rgb(0, 208, 255);
+      transform: translateX(-5px);
+    }
+    .form-container {
+      text-align: center;
+      margin: 2rem auto;
+      max-width: 600px;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.681);
+      backdrop-filter: blur(0.1px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      transition: all 0.4s ease;
+    }
+    .form-container:hover {
+      box-shadow: 0 0 25px rgba(234, 0, 255, 0.8);
+      backdrop-filter: blur(0.5px);
+    }
+    .input-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .input-field {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .input-field label {
+      color: aliceblue;
+      text-shadow: 0 0 5px rgb(0, 208, 255);
+      margin-bottom: 0.5rem;
+    }
+    input[type="text"] {
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.5);
+      color: aliceblue;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      width: 300px;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: rgb(0, 208, 255);
+      box-shadow: 0 0 10px rgba(0, 208, 255, 0.3);
+    }
+    button {
+      background: transparent;
+      color: aliceblue;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 5px rgb(0, 208, 255);
+    }
+    button:hover {
+      background: rgba(234, 0, 255, 0.2);
+      border-color: rgb(234, 0, 255);
+      box-shadow: 0 0 15px rgba(234, 0, 255, 0.4);
+    }
+    .project-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.681);
+      backdrop-filter: blur(0.1px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      transition: all 0.4s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .project-container:hover {
+      box-shadow: 0 0 25px rgba(234, 0, 255, 0.8);
+      backdrop-filter: blur(0.5px);
+    }
+    .project-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .project-header h2 {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      margin: 0 0 1rem 0;
+      font-size: 2rem;
+    }
+    .project-header p {
+      color: aliceblue;
+      text-shadow: 0 0 3px rgb(0, 255, 106);
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+    }
+    .project-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .detail-section {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .detail-section h3 {
+      color: #fff;
+      text-shadow: 0 0 5px rgb(0, 208, 255);
+      margin: 0 0 1rem 0;
+      font-size: 1.3rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 0.5rem;
+    }
+    .detail-section p {
+      color: aliceblue;
+      text-shadow: 0 0 3px rgb(0, 255, 106);
+      margin: 0.5rem 0;
+      line-height: 1.6;
+    }
+    .detail-section strong {
+      color: #fff;
+      text-shadow: 0 0 5px rgb(0, 208, 255);
+    }
+    .error {
+      color: #ff6b6b;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(255, 107, 107, 0.1);
+      border-radius: 8px;
+      margin: 1rem auto;
+      max-width: 600px;
+      text-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+    }
+    .info-text {
+      color: aliceblue;
+      text-shadow: 0 0 3px rgb(0, 255, 106);
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚀 NASA TechPort</h1>
+    <a href="/missions">← Back to Missions</a>
+  </header>
+
+  <div class="form-container">
+    <form method="GET" action="/missions/techport">
+      <div class="input-group">
+        <div class="input-field">
+          <label>Project ID</label>
+          <input type="text" name="id" placeholder="Enter NASA TechPort Project ID" required>
+        </div>
+      </div>
+      <p class="info-text">Enter a NASA TechPort Project ID to view detailed information about the project.</p>
+      <button type="submit">Get Project Details</button>
+    </form>
+  </div>
+
+  <% if (error) { %>
+    <p class="error"><%= error %></p>
+  <% } else if (project) { %>
+    <div class="project-container">
+      <div class="project-header">
+        <h2><%= project.title %></h2>
+        <p><strong>Project ID:</strong> <%= project.projectId %></p>
+        <p><strong>Status:</strong> <%= project.status %></p>
+      </div>
+
+      <div class="project-details">
+        <div class="detail-section">
+          <h3>Description</h3>
+          <p><%= project.description || 'No description available' %></p>
+        </div>
+
+        <div class="detail-section">
+          <h3>Organization</h3>
+          <p><strong>Center:</strong> <%= project.organization?.center || 'Not specified' %></p>
+          <p><strong>Program:</strong> <%= project.organization?.program || 'Not specified' %></p>
+          <p><strong>Lead Organization:</strong> <%= project.organization?.leadOrganization || 'Not specified' %></p>
+        </div>
+
+        <div class="detail-section">
+          <h3>Technology Details</h3>
+          <p><strong>Technology Maturity:</strong> <%= project.technologyMaturity || 'Not specified' %></p>
+          <p><strong>Technology Areas:</strong> <%= project.technologyAreas?.join(', ') || 'Not specified' %></p>
+        </div>
+
+        <% if (project.primaryImage) { %>
+          <div class="detail-section">
+            <h3>Project Image</h3>
+            <img src="<%= project.primaryImage %>" alt="Project Image" style="width: 100%; border-radius: 8px;">
+          </div>
+        <% } %>
+      </div>
+    </div>
+  <% } %>
+
+  <script>
+    // Add animation for project container
+    const projectContainer = document.querySelector('.project-container');
+    if (projectContainer) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, { threshold: 0.1 });
+
+      observer.observe(projectContainer);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mars Rover Photos</title>
+  <link rel="stylesheet" href="/homepage.css">
+  <style>
+    body {
+      background: #000;
+      color: aliceblue;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+    }
+    header {
+      height: auto;
+      padding: 2rem;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+    }
+    header h1 {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    header a {
+      color: aliceblue;
+      text-decoration: none;
+      text-shadow: 0 0 5px rgb(0, 208, 255);
+      display: inline-block;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+    }
+    header a:hover {
+      color: rgb(0, 208, 255);
+      transform: translateX(-5px);
+    }
+    .form-container {
+      text-align: center;
+      margin: 2rem auto;
+      max-width: 600px;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.681);
+      backdrop-filter: blur(0.1px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      transition: all 0.4s ease;
+    }
+    .form-container:hover {
+      box-shadow: 0 0 25px rgba(234, 0, 255, 0.8);
+      backdrop-filter: blur(0.5px);
+    }
+    .input-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .input-field {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .input-field label {
+      color: aliceblue;
+      text-shadow: 0 0 5px rgb(0, 208, 255);
+      margin-bottom: 0.5rem;
+    }
+    select, input[type="number"] {
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.5);
+      color: aliceblue;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      width: 200px;
+    }
+    select:focus, input[type="number"]:focus {
+      outline: none;
+      border-color: rgb(0, 208, 255);
+      box-shadow: 0 0 10px rgba(0, 208, 255, 0.3);
+    }
+    button {
+      background: transparent;
+      color: aliceblue;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 5px rgb(0, 208, 255);
+    }
+    button:hover {
+      background: rgba(234, 0, 255, 0.2);
+      border-color: rgb(234, 0, 255);
+      box-shadow: 0 0 15px rgba(234, 0, 255, 0.4);
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .photo-card {
+      background: rgba(0, 0, 0, 0.681);
+      backdrop-filter: blur(0.1px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: all 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .photo-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px rgba(234, 0, 255, 0.8);
+      backdrop-filter: blur(0.5px);
+    }
+    .photo-card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .photo-card h3 {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      margin: 0 0 1rem 0;
+      font-size: 1.3rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 0.5rem;
+    }
+    .photo-card p {
+      color: aliceblue;
+      text-shadow: 0 0 3px rgb(0, 255, 106);
+      margin: 0.5rem 0;
+      line-height: 1.6;
+    }
+    .photo-card strong {
+      color: #fff;
+      text-shadow: 0 0 5px rgb(0, 208, 255);
+    }
+    .error {
+      color: #ff6b6b;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(255, 107, 107, 0.1);
+      border-radius: 8px;
+      margin: 1rem auto;
+      max-width: 600px;
+      text-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+    }
+    .info-text {
+      color: aliceblue;
+      text-shadow: 0 0 3px rgb(0, 255, 106);
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚀 Mars Rover Photos</h1>
+    <a href="/missions">← Back to Missions</a>
+  </header>
+
+  <div class="form-container">
+    <form method="GET" action="/missions/mars">
+      <div class="input-group">
+        <div class="input-field">
+          <label>Rover</label>
+          <select name="rover" value="<%= rover || 'curiosity' %>">
+            <option value="curiosity">Curiosity</option>
+            <option value="opportunity">Opportunity</option>
+            <option value="spirit">Spirit</option>
+            <option value="perseverance">Perseverance</option>
+          </select>
+        </div>
+        <div class="input-field">
+          <label>Sol (Martian Day)</label>
+          <input type="number" name="sol" value="<%= sol || '1000' %>" min="0" max="2000" required>
+        </div>
+      </div>
+      <p class="info-text">Note: Sol is a Martian day. Each rover has different mission durations.</p>
+      <button type="submit">Get Mars Photos</button>
+    </form>
+  </div>
+
+  <% if (error) { %>
+    <p class="error"><%= error %></p>
+  <% } else if (photos && photos.length === 0) { %>
+    <p class="error">No photos found for the selected rover and sol.</p>
+  <% } else if (photos) { %>
+    <div class="gallery">
+      <% photos.forEach(photo => { %>
+        <div class="photo-card">
+          <img src="<%= photo.img_src %>" alt="Mars Rover Photo">
+          <h3>Photo <%= photos.indexOf(photo) + 1 %></h3>
+          <p><strong>Rover:</strong> <%= photo.rover.name %></p>
+          <p><strong>Camera:</strong> <%= photo.camera.full_name %></p>
+          <p><strong>Earth Date:</strong> <%= new Date(photo.earth_date).toLocaleDateString() %></p>
+          <p><strong>Sol:</strong> <%= photo.sol %></p>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <script>
+    // Add animation for cards
+    const cards = document.querySelectorAll('.photo-card');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    cards.forEach(card => {
+      observer.observe(card);
+    });
+
+    // Set the selected rover in the dropdown
+    document.querySelector('select[name="rover"]').value = '<%= rover || "curiosity" %>';
+  </script>
+</body>
+</html>

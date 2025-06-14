@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Objects & Events</title>
+    <link rel="stylesheet" href="/homepage.css">
+</head>
+<body>
+    <header>
+        <div class="title">
+            <h1>Space Objects & Events</h1>
+        </div>
+    </header>
+
+    
+    <div class="content">
+        <a href="/space-objects/neow" style="text-decoration: none; color: inherit;">
+            <div class="module module-left" onclick="toggleModule(this)">
+                <h1>NeoWs (Near Earth Object Web Service)</h1>
+            </div>
+        </a>
+
+        <a href="/space-objects/donki" style="text-decoration: none; color: inherit;">
+            <div class="module module-right" onclick="toggleModule(this)">
+                <h1>DONKI (Space Weather Database Of Notifications, Knowledge, Information)</h1>
+            </div>
+        </a>
+
+        <a href="/space-objects/ssc" style="text-decoration: none; color: inherit;">
+            <div class="module module-left" onclick="toggleModule(this)">
+                <h1>Satellite Situation Center (SSC) Web Services</h1>
+            </div>
+        </a>
+
+    </div>
+
+    <!-- Load Three.js first -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Then load our starfield script -->
+    <script src="/starfield.js"></script>
+    <script>
+        function toggleModule(module) {
+            module.classList.toggle('active');
+        }
+
+        // Add intersection observer for animations
+        const modules = document.querySelectorAll('.module');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                } else {
+                    entry.target.classList.remove('in-view');
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        modules.forEach(module => observer.observe(module));
+    </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Near Earth Objects (NEOs)</title>
+  <link rel="stylesheet" href="/homepage.css" />
+  <style>
+    .neow-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .neow-content {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 30px;
+      margin: 20px 0;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .neow-title {
+      color: #fff;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    .neow-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .neow-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .neow-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 208, 255, 0.3);
+    }
+    .neow-card h3 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+    .neow-info {
+      color: #ccc;
+      margin: 10px 0;
+      font-size: 1.1rem;
+    }
+    .neow-info strong {
+      color: #fff;
+    }
+    .neow-warning {
+      color: #ff6b6b;
+      font-weight: bold;
+      margin-top: 10px;
+      padding: 10px;
+      background: rgba(255, 107, 107, 0.1);
+      border-radius: 5px;
+    }
+    .neow-safe {
+      color: #4CAF50;
+      font-weight: bold;
+      margin-top: 10px;
+      padding: 10px;
+      background: rgba(76, 175, 80, 0.1);
+      border-radius: 5px;
+    }
+    .error-message {
+      color: #ff6b6b;
+      text-align: center;
+      padding: 20px;
+      background: rgba(255, 107, 107, 0.1);
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+    .date-selector {
+      margin-bottom: 30px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+    }
+    .date-input {
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+    .date-button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background: rgba(0, 208, 255, 0.3);
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .date-button:hover {
+      background: rgba(0, 208, 255, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title">
+      <h1>Near Earth Objects (NEOs)</h1>
+      <p>Track asteroids and comets that approach Earth</p>
+    </div>
+  </header>
+
+  <div class="neow-container">
+    <form class="date-selector" action="/space-objects/neow" method="GET">
+      <input type="date" name="date" value="<%= date %>" class="date-input" />
+      <button type="submit" class="date-button">View NEOs</button>
+    </form>
+
+    <% if (error) { %>
+      <div class="error-message">
+        <h2>Error</h2>
+        <p><%= error %></p>
+      </div>
+    <% } else if (asteroids && asteroids.length > 0) { %>
+      <div class="neow-grid">
+        <% asteroids.forEach((asteroid, index) => { %>
+          <div class="neow-card">
+            <h3><%= asteroid.name %></h3>
+            <div class="neow-info">
+              <p><strong>Distance:</strong> <%= asteroid.distance %> km</p>
+              <p><strong>Velocity:</strong> <%= asteroid.velocity %> km/s</p>
+            </div>
+            <div class="<%= asteroid.problem.includes('worry') ? 'neow-warning' : 'neow-safe' %>">
+              <%= asteroid.problem %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="neow-content">
+        <h2 class="neow-title">No NEOs Found</h2>
+        <p class="neow-info">No near-Earth objects were detected for the selected date. Try a different date.</p>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Load Three.js first -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Then load our starfield script -->
+  <script src="/starfield.js"></script>
+</body>
+</html>

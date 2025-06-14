@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>APOD</title>
+  <link rel="stylesheet" href="/homepage.css" />
+  <style>
+    .apod-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .apod-content {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 30px;
+      margin: 20px 0;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .apod-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin: 20px 0;
+      box-shadow: 0 0 20px rgba(0, 208, 255, 0.3);
+    }
+    .apod-video {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+    .apod-title {
+      color: #fff;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    .apod-explanation {
+      color: #ccc;
+      line-height: 1.6;
+      margin: 20px 0;
+    }
+    .apod-meta {
+      color: #999;
+      font-size: 0.9rem;
+      margin-top: 20px;
+    }
+    .error-message {
+      color: #ff6b6b;
+      text-align: center;
+      padding: 20px;
+      background: rgba(255, 107, 107, 0.1);
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title">
+      <h1>Astronomy Picture of the Day</h1>
+    </div>
+  </header>
+
+  <div class="apod-container">
+    <% if (error) { %>
+      <div class="error-message">
+        <h2>Error</h2>
+        <p><%= error %></p>
+      </div>
+    <% } else if (apod) { %>
+      <div class="apod-content">
+        <h2 class="apod-title"><%= apod.title %></h2>
+
+        <% if (apod.media_type === 'image') { %>
+          <img src="<%= apod.url %>" alt="<%= apod.title %>" class="apod-image" />
+        <% } else if (apod.media_type === 'video') { %>
+          <iframe src="<%= apod.url %>" frameborder="0" allowfullscreen class="apod-video"></iframe>
+        <% } %>
+
+        <div class="apod-explanation">
+          <%= apod.explanation %>
+        </div>
+
+        <div class="apod-meta">
+          <% if (apod.date) { %>
+            <p><strong>Date:</strong> <%= new Date(apod.date).toLocaleDateString() %></p>
+          <% } %>
+          <% if (apod.copyright) { %>
+            <p><strong>Copyright:</strong> <%= apod.copyright %></p>
+          <% } %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Load Three.js first -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Then load our starfield script -->
+  <script src="/starfield.js"></script>
+</body>
+</html>

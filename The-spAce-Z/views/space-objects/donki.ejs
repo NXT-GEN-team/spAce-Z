@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DONKI – Solar Weather</title>
+  <link rel="stylesheet" href="/homepage.css">
+  <style>
+    body {
+      background: #000;
+      color: aliceblue;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+    }
+    header {
+      height: auto;
+      padding: 2rem;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+    }
+    header h1 {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    header a {
+      color: aliceblue;
+      text-decoration: none;
+      text-shadow: 0 0 5px rgb(0, 208, 255);
+      display: inline-block;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+    }
+    header a:hover {
+      color: rgb(0, 208, 255);
+      transform: translateX(-5px);
+    }
+    .form-container {
+      text-align: center;
+      margin: 2rem auto;
+      max-width: 600px;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.681);
+      backdrop-filter: blur(0.1px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      transition: all 0.4s ease;
+    }
+    .form-container:hover {
+      box-shadow: 0 0 25px rgba(234, 0, 255, 0.8);
+      backdrop-filter: blur(0.5px);
+    }
+    .date-range {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .date-input {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .date-input label {
+      color: aliceblue;
+      text-shadow: 0 0 5px rgb(0, 208, 255);
+      margin-bottom: 0.5rem;
+    }
+    input[type="date"] {
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.5);
+      color: aliceblue;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    input[type="date"]:focus {
+      outline: none;
+      border-color: rgb(0, 208, 255);
+      box-shadow: 0 0 10px rgba(0, 208, 255, 0.3);
+    }
+    button {
+      background: transparent;
+      color: aliceblue;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 5px rgb(0, 208, 255);
+    }
+    button:hover {
+      background: rgba(234, 0, 255, 0.2);
+      border-color: rgb(234, 0, 255);
+      box-shadow: 0 0 15px rgba(234, 0, 255, 0.4);
+    }
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .card {
+      background: rgba(0, 0, 0, 0.681);
+      backdrop-filter: blur(0.1px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: all 0.4s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px rgba(234, 0, 255, 0.8);
+      backdrop-filter: blur(0.5px);
+    }
+    .card h3 {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      margin: 0 0 1rem 0;
+      font-size: 1.3rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 0.5rem;
+    }
+    .card p {
+      color: aliceblue;
+      text-shadow: 0 0 3px rgb(0, 255, 106);
+      margin: 0.5rem 0;
+      line-height: 1.6;
+    }
+    .card strong {
+      color: #fff;
+      text-shadow: 0 0 5px rgb(0, 208, 255);
+    }
+    .card a {
+      color: rgb(0, 208, 255);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .card a:hover {
+      color: rgb(234, 0, 255);
+      text-shadow: 0 0 5px rgba(234, 0, 255, 0.8);
+    }
+    .error {
+      color: #ff6b6b;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(255, 107, 107, 0.1);
+      border-radius: 8px;
+      margin: 1rem auto;
+      max-width: 600px;
+      text-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>☄️ Coronal Mass Ejections (DONKI)</h1>
+    <a href="/space-objects">← Back to Space Objects</a>
+  </header>
+
+  <div class="form-container">
+    <form method="GET" action="/space-objects/donki">
+      <div class="date-range">
+        <div class="date-input">
+          <label>Start Date</label>
+          <input type="date" name="start" value="<%= start || '' %>" required>
+        </div>
+        <div class="date-input">
+          <label>End Date</label>
+          <input type="date" name="end" value="<%= end || '' %>" required>
+        </div>
+      </div>
+      <button type="submit">Fetch Solar Events</button>
+    </form>
+  </div>
+
+  <% if (error) { %>
+    <p class="error"><%= error %></p>
+  <% } else if (events && events.length === 0) { %>
+    <p class="error">No solar events found for this date range.</p>
+  <% } else if (events) { %>
+    <div class="results">
+      <% events.forEach(e => { %>
+        <div class="card">
+          <h3><%= new Date(e.startTime).toLocaleString() %></h3>
+          <p><strong>Source Location:</strong> <%= e.sourceLocation || "N/A" %></p>
+          <p><strong>Activity Type:</strong> <%= e.activityType || "N/A" %></p>
+          <p><strong>Note:</strong> <%= e.note || "No additional information available" %></p>
+          <% if (e.link) { %>
+            <p><strong>More Info:</strong> <a href="<%= e.link %>" target="_blank">View Details</a></p>
+          <% } %>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <script>
+    // Add animation for cards
+    const cards = document.querySelectorAll('.card');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    cards.forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      observer.observe(card);
+    });
+  </script>
+</body>
+</html>

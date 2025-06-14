@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NASA POWER Data</title>
+  <link rel="stylesheet" href="/css/homepage.css">
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    #starfield {
+      display: none;
+    }
+
+    .header {
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 1rem;
+      text-align: center;
+      position: relative;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(0, 208, 255, 0.5);
+    }
+
+    .back-button {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.5rem;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 10px rgba(0, 208, 255, 0.5);
+    }
+
+    .back-button:hover {
+      color: rgb(0, 208, 255);
+      text-shadow: 0 0 15px rgba(0, 208, 255, 0.8);
+    }
+
+    .form-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 208, 255, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(0, 208, 255, 0.3);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: rgb(0, 208, 255);
+      box-shadow: 0 0 15px rgba(0, 208, 255, 0.3);
+    }
+
+    .form-group input:hover {
+      border-color: rgba(234, 0, 255, 0.2);
+    }
+
+    button[type="submit"] {
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      width: 100%;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(0, 208, 255, 0.5);
+      backdrop-filter: blur(10px);
+    }
+
+    button[type="submit"]:hover {
+      transform: translateY(-2px);
+      background: rgba(0, 0, 0, 0.9);
+      border-color: rgb(0, 208, 255);
+      box-shadow: 0 0 20px rgba(0, 208, 255, 0.4);
+    }
+
+    .data-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 208, 255, 0.1);
+    }
+
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .data-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .data-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(0, 208, 255, 0.2);
+      border-color: rgba(0, 208, 255, 0.3);
+    }
+
+    .data-card h3 {
+      margin: 0 0 1rem 0;
+      color: rgb(0, 208, 255);
+      text-shadow: 0 0 10px rgba(0, 208, 255, 0.3);
+    }
+
+    .data-value {
+      font-size: 1.5rem;
+      color: #fff;
+      margin: 0.5rem 0;
+      text-shadow: 0 0 10px rgba(0, 208, 255, 0.2);
+    }
+
+    .data-label {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .error {
+      color: #ff4444;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(255, 68, 68, 0.1);
+      border-radius: 8px;
+      margin: 1rem 0;
+      text-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
+    }
+
+    .no-data {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 2rem;
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .form-container,
+      .data-container {
+        margin: 1rem;
+        padding: 1rem;
+      }
+
+      .data-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <button class="back-button" onclick="window.location.href='/earth'">← Back</button>
+    <h1>NASA POWER Data</h1>
+  </div>
+
+  <div class="form-container">
+    <form method="GET" action="/earth/power">
+      <div class="form-group">
+        <label for="lat">Latitude:</label>
+        <input type="number" id="lat" name="lat" step="any" value="<%= lat %>" required>
+      </div>
+      <div class="form-group">
+        <label for="lon">Longitude:</label>
+        <input type="number" id="lon" name="lon" step="any" value="<%= lon %>" required>
+      </div>
+      <div class="form-group">
+        <label for="start">Start Date:</label>
+        <input type="date" id="start" name="start" value="<%= start %>" required>
+      </div>
+      <div class="form-group">
+        <label for="end">End Date:</label>
+        <input type="date" id="end" name="end" value="<%= end %>" required>
+      </div>
+      <button type="submit">Get Data</button>
+    </form>
+  </div>
+
+  <% if (error) { %>
+    <div class="error"><%= error %></div>
+  <% } else if (data) { %>
+    <div class="data-container">
+      <div class="data-grid">
+        <% dates.forEach(date => { %>
+          <div class="data-card">
+            <h3><%= new Date(date).toLocaleDateString() %></h3>
+            <div class="data-label">Solar Radiation</div>
+            <div class="data-value"><%= data.ALLSKY_SFC_SW_DWN[date].toFixed(2) %> MJ/m²/day</div>
+            <div class="data-label">Temperature</div>
+            <div class="data-value"><%= data.T2M[date].toFixed(1) %>°C</div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="no-data">Enter coordinates and date range to view POWER data</div>
+  <% } %>
+
+  <script>
+    // Card animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    document.querySelectorAll('.data-card').forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = 'all 0.5s ease-out';
+      observer.observe(card);
+    });
+  </script>
+</body>
+</html>
