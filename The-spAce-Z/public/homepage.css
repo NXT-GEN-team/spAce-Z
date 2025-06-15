@@ -95,7 +95,8 @@ header {
     backdrop-filter: blur(0.5px);
 }
 .module:hover h1{
-    color: rgba(234, 0, 255, 0.8);
+    color: aliceblue;
+    text-shadow: 2px 2px 8px rgba(246, 143, 255, 0.8);
     margin: 0;
     font-size: 1.8em;
     cursor: pointer;

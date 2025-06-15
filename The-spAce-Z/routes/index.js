@@ -361,7 +361,6 @@ router.get('/space-objects/donki', async (req, res) => {
 router.get('/space-objects/ssc', async (req, res) => {
   const { objectId, startTime, endTime, stepSize = '60' } = req.query;
 
-  // Initial render without form submitted
   if (!objectId || !startTime || !endTime) {
     return res.render('space-objects/ssc', {
       objectId: '',
@@ -374,20 +373,28 @@ router.get('/space-objects/ssc', async (req, res) => {
   }
 
   try {
-    const url = `https://sscweb.gsfc.nasa.gov/WS/sscr/2/locations`;
-    const params = {
-      ids: objectId,
-      startTime: `${startTime}`,
-      endTime: `${endTime}`,
-      stepSize: stepSize
-    };
+    const payload = [{
+      "sc.id": [objectId.toLowerCase()],
+      startTime: new Date(parseInt(startTime) * 1000).toISOString(),
+      endTime: new Date(parseInt(endTime) * 1000).toISOString(),
+      resolutionFactor: 1
+    }];
 
-    const response = await axios.get(url, {
-      params,
-      headers: { Accept: 'application/json' }
-    });
+    console.log("🔍 Payload being sent to SSCWeb:");
+    console.log(JSON.stringify(payload, null, 2));
 
-    const satData = response.data?.SatelliteData?.[0];
+    const response = await axios.post(
+      'https://sscweb.gsfc.nasa.gov/WS/sscr/2/locations',
+      payload,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+    );
+
+    const satData = response.data?.[0]?.SatelliteData?.[0];
 
     if (!satData || !satData.SatelliteLocation || satData.SatelliteLocation.length === 0) {
       return res.render('space-objects/ssc', {
@@ -396,12 +403,12 @@ router.get('/space-objects/ssc', async (req, res) => {
         endTime,
         stepSize,
         data: null,
-        error: `No position data found for object "${objectId}" in that time range.`
+        error: `No position data found for "${objectId}" in that time range.`
       });
     }
 
     const data = satData.SatelliteLocation.map(loc => ({
-      time: new Date(loc.Date).getTime() / 1000, // Convert to Unix timestamp
+      time: new Date(loc.Date).getTime() / 1000,
       position: {
         x: parseFloat(loc.X),
         y: parseFloat(loc.Y),
@@ -422,18 +429,21 @@ router.get('/space-objects/ssc', async (req, res) => {
       data,
       error: null
     });
+
   } catch (err) {
-    console.error("SSC Fetch Error:", err.message);
+    console.error("🚨 SSC Fetch Error:");
+    console.error(err.response?.data || err.message);
     res.render('space-objects/ssc', {
       objectId,
       startTime,
       endTime,
       stepSize,
       data: null,
-      error: "Failed to fetch object data. Please ensure the object ID and time range are valid."
+      error: "Failed to fetch object data. Check the console for details."
     });
   }
 });
+
 
 // mars
 router.get('/missions/mars', async (req, res) => {
@@ -492,37 +502,42 @@ router.get('/missions/techport', async (req, res) => {
   }
 });
 
-// exo
-router.get('/missions/exo', async (req, res) => {
-  const year = parseInt(req.query.year) || 2020;
+// // exo
+// router.get('/missions/exo', async (req, res) => {
+//   const year = parseInt(req.query.year) || 2020;
 
-  const baseUrl = 'https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI';
-  const params = new URLSearchParams({
-    table: 'pscomppars',
-    select: 'pl_name,hostname,disc_year,pl_rade,pl_bmasse,st_dist,st_teff',
-    where: `disc_year>=${year}`,
-    format: 'json'
-  });
+//   const baseUrl = 'https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI';
+//   const params = new URLSearchParams({
+//     table: 'ps',  // ✅ Correct table name
+//     select: 'pl_name,hostname,disc_year,pl_rade,pl_bmasse,st_dist,st_teff',
+//     where: `disc_year>=${year}`,
+//     format: 'json'
+//   });
 
-  try {
-    const response = await axios.get(`${baseUrl}?${params.toString()}`);
-    // Ensure we have an array of planets
-    const planets = Array.isArray(response.data) ? response.data : [];
+//   const fullUrl = `${baseUrl}?${params.toString()}`;
+//   console.log('🔭 Fetching Exoplanet data from:', fullUrl);
 
-    res.render('missions/exo', { 
-      planets, 
-      year, 
-      error: null 
-    });
-  } catch (err) {
-    console.error('Exoplanet API Error:', err.message);
-    res.render('missions/exo', { 
-      planets: [], 
-      year, 
-      error: 'Failed to fetch Exoplanet data. Try again later.' 
-    });
-  }
-});
+//   try {
+//     const response = await axios.get(fullUrl);
+//     const planets = Array.isArray(response.data) ? response.data : [];
+
+//     console.log(`🪐 Found ${planets.length} planets discovered since ${year}`);
+
+//     res.render('missions/exo', {
+//       planets,
+//       year,
+//       error: planets.length === 0 ? `No exoplanets found for ${year} or later.` : null
+//     });
+//   } catch (err) {
+//     console.error('🚨 Exoplanet API Error:', err.message);
+//     res.render('missions/exo', {
+//       planets: [],
+//       year,
+//       error: 'Failed to fetch Exoplanet data. Try again later.'
+//     });
+//   }
+// });
+
 
 // power
 router.get('/earth/power', async (req, res) => {
