@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Exoplanet Archive</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle, #0b0b15 0%, #060612 100%);
+      color: #fff;
+    }
+
+    .section {
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .search-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .search-form input,
+    .search-form button {
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #1c1c2b;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .search-form button {
+      background-color: #3a3aff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .search-form button:hover {
+      background-color: #2f2fd1;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #111;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .card h3 {
+      color: #ffd700;
+    }
+
+    .no-results {
+      text-align: center;
+      margin-top: 20px;
+      font-style: italic;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <h2>🔭 Explore Exoplanets</h2>
+
+      <form action="/research/exoplanets" method="get" class="search-form">
+        <input type="text" name="pl_name" placeholder="Planet Name">
+        <input type="text" name="hostname" placeholder="Host Star Name">
+        <input type="number" name="disc_year" placeholder="Discovery Year">
+        <input type="text" name="disc_method" placeholder="Discovery Method">
+        <button type="submit">Search</button>
+      </form>
+
+      <% if (planets && planets.length > 0) { %>
+        <div class="card-grid">
+          <% planets.forEach(p => { %>
+            <div class="card">
+              <h3><%= p.pl_name %></h3>
+              <p><strong>Host Star:</strong> <%= p.hostname %></p>
+              <p><strong>Year:</strong> <%= p.disc_year %></p>
+              <p><strong>Method:</strong> <%= p.discoverymethod %></p>
+            </div>
+          <% }) %>
+        </div>
+      <% } else if (typeof planets !== 'undefined') { %>
+        <p class="no-results">No results found. Try different filters.</p>
+      <% } %>
+    </div>
+  </section>
+</body>
+</html>

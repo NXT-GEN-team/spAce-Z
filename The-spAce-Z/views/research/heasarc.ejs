@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HEASARC Archive</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle, #0b0b15 0%, #060612 100%);
+      color: #fff;
+    }
+    .section {
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .search-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    .search-form select,
+    .search-form input,
+    .search-form button {
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #1c1c2b;
+      color: #fff;
+      font-size: 1rem;
+    }
+    .search-form button {
+      background-color: #3a3aff;
+      cursor: pointer;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #111;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.3);
+    }
+    .card h3 {
+      color: #ffd700;
+    }
+    .no-results {
+      text-align: center;
+      margin-top: 20px;
+      font-style: italic;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <h2>🛰️ HEASARC Data Search</h2>
+
+      <form action="/research/heasarc" method="get" class="search-form">
+        <select name="table">
+          <option value="rosmaster">ROSAT</option>
+          <option value="chandra">Chandra</option>
+          <option value="swiftmastr">Swift</option>
+        </select>
+        <input type="text" name="ra" placeholder="RA (hh:mm:ss)" required>
+        <input type="text" name="dec" placeholder="Dec (+dd:mm:ss)" required>
+        <input type="number" name="radius" placeholder="Radius (°)" step="0.01" value="0.1">
+        <button type="submit">Search</button>
+      </form>
+
+      <% if (results && results.length > 0) { %>
+        <div class="card-grid">
+          <% results.forEach(r => { %>
+            <div class="card">
+              <h3><%= r.name %></h3>
+              <p><strong>ObsID:</strong> <%= r.obsid %></p>
+              <p><strong>RA:</strong> <%= r.ra %></p>
+              <p><strong>Dec:</strong> <%= r.dec %></p>
+              <p><strong>Start:</strong> <%= r.start %></p>
+              <p><strong>Stop:</strong> <%= r.stop %></p>
+            </div>
+          <% }) %>
+        </div>
+      <% } else if (typeof results !== 'undefined') { %>
+        <p class="no-results">No results found or data not available.</p>
+      <% } %>
+    </div>
+  </section>
+</body>
+</html>

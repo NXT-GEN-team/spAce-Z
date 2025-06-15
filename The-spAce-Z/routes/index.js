@@ -650,4 +650,85 @@ router.get('/research/pds', async (req, res) => {
 });
 
 
+//exoplanets
+router.get('/research/exoplanets', async (req, res) => {
+  const { pl_name, hostname, disc_year, disc_method } = req.query;
+
+  const conditions = [];
+
+  if (pl_name) conditions.push(`pl_name LIKE '%${pl_name}%'`);
+  if (hostname) conditions.push(`hostname LIKE '%${hostname}%'`);
+  if (disc_year) conditions.push(`disc_year = ${disc_year}`);
+  if (disc_method) conditions.push(`discoverymethod LIKE '%${disc_method}%'`);
+
+  // Oracle SQL: LIMIT is not allowed, use ROWNUM instead
+  conditions.push('ROWNUM <= 20');
+
+  const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
+
+  const query = `SELECT pl_name, hostname, disc_year, discoverymethod FROM ps ${whereClause} ORDER BY disc_year DESC`;
+
+  const apiUrl = `https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=${encodeURIComponent(query)}&format=json`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const planets = response.data;
+    res.render('research/exoplanets', { planets });
+  } catch (err) {
+    console.error('Exoplanet API error:', err.message);
+    res.render('research/exoplanets', { planets: [], error: 'Failed to fetch exoplanet data.' });
+  }
+});
+
+const cheerio = require('cheerio');
+
+// HEASARC HTML scraping route
+router.get('/research/heasarc', async (req, res) => {
+  const { table = 'rosmaster', ra, dec, radius = '0.1' } = req.query;
+
+  console.log("🛰️ HEASARC Route hit with query:", req.query);
+
+  if (!ra || !dec) {
+    return res.render('research/heasarc', { results: undefined });
+  }
+
+  const queryParams = new URLSearchParams({
+    tablehead: `name=${table}`,
+    Coordinates: 'Equatorial',
+    Entry: `${ra} ${dec}`,
+    Radius: radius,
+    RadiusUnits: 'deg',
+    Fields: 'All',
+    format: 'HTML'
+  });
+
+  const apiUrl = `https://heasarc.gsfc.nasa.gov/db-perl/W3Browse/w3query.pl?${queryParams.toString()}`;
+  console.log("🔗 Requesting:", apiUrl);
+
+  try {
+    const response = await axios.get(apiUrl, { timeout: 15000 });
+    const $ = cheerio.load(response.data);
+
+    // Extract the first row of data from the HTML response
+    const dataCells = $("td#tddata").toArray().map(td => $(td).text().trim().replace(/\s+/g, ' '));
+
+    // Safely extract expected fields by position (manually mapped from postman-output.txt)
+    const result = {
+      name: dataCells[0] || "Unknown",
+      obsid: dataCells[1] || "N/A",
+      ra: dataCells[2] || "N/A",
+      dec: dataCells[3] || "N/A",
+      start: dataCells[4] || "N/A",
+      stop: dataCells[5] || "N/A"
+    };
+
+    console.log("✅ Extracted result:", result);
+    res.render('research/heasarc', { results: [result] });
+
+  } catch (err) {
+    console.error("❌ HEASARC HTML parse error:", err.message);
+    res.render('research/heasarc', { results: [], error: 'Failed to fetch or parse HEASARC HTML data.' });
+  }
+});
+
 module.exports = router;
