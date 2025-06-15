@@ -18,6 +18,7 @@
       text-align: center;
       background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(10px);
+      position: relative;
     }
     header h1 {
       color: #fff;
@@ -29,13 +30,15 @@
       color: aliceblue;
       text-decoration: none;
       text-shadow: 0 0 5px rgb(0, 208, 255);
-      display: inline-block;
-      margin-top: 1rem;
+      position: absolute;
+      left: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
       transition: all 0.3s ease;
     }
     header a:hover {
       color: rgb(0, 208, 255);
-      transform: translateX(-5px);
+      transform: translateY(-50%) translateX(-5px);
     }
     .form-container {
       text-align: center;
@@ -172,8 +175,8 @@
 </head>
 <body>
   <header>
+    <a href="/missions">← Back</a>
     <h1>🚀 Mars Rover Photos</h1>
-    <a href="/missions">← Back to Missions</a>
   </header>
 
   <div class="form-container">

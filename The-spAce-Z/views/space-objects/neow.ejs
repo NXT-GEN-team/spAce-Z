@@ -106,9 +106,32 @@
     .date-button:hover {
       background: rgba(0, 208, 255, 0.5);
     }
+    .back-button {
+      color: aliceblue;
+      text-decoration: none;
+      text-shadow: 0 0 5px rgb(0, 208, 255);
+      position: fixed;
+      left: 2rem;
+      top: 2rem;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      font-size: 1.2rem;
+      padding: 0.8rem 1.5rem;
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      backdrop-filter: blur(10px);
+    }
+    .back-button:hover {
+      color: rgb(0, 208, 255);
+      transform: translateX(-5px);
+      border-color: rgb(0, 208, 255);
+      box-shadow: 0 0 15px rgba(0, 208, 255, 0.4);
+    }
   </style>
 </head>
 <body>
+  <a href="/space-objects" class="back-button">← Back</a>
   <header>
     <div class="title">
       <h1>Near Earth Objects (NEOs)</h1>
