@@ -7,43 +7,78 @@
     <link rel="stylesheet" href="/homepage.css">
 </head>
 <body>
-        <header>
-            <div class="title">
+    <header>
+        <div class="m-title">
                 <h1>spAce-Z</h1>
                 <p>Explore the news amoung the stars</p>
-            </div>
-        </header>
-        <div class="content">
-            <a href="/astro" style="text-decoration: none; color: inherit;">
+        </div>
+    </header>
+    <div class="content">
+        <a href="/astro" style="text-decoration: none; color: inherit;">
                 <div class="module module-left">
                     <h1>Astronomy & Imagery</h1>
                 </div>
-            </a>
-            <a href="/space-objects" style="text-decoration: none; color: inherit;">
+        </a>
+        <a href="/space-objects" style="text-decoration: none; color: inherit;">
                 <div class="module module-right">
                     <h1>Space Objects & Events</h1>
                 </div>
-            </a>
-            <a href="/missions" style="text-decoration: none; color: inherit;">
+        </a>
+        <a href="/missions" style="text-decoration: none; color: inherit;">
                 <div class="module module-left">
                     <h1>Missions & Data Repositories</h1>
                 </div>
-            </a>
-            <a href="/earth" style="text-decoration: none; color: inherit;">
+        </a>
+        <a href="/research" style="text-decoration: none; color: inherit;">
                 <div class="module module-right">
-                    <h1>Earth Science & Environmental Data</h1>
-                </div>
-            </a>
-            <a href="/research" style="text-decoration: none; color: inherit;">
-                <div class="module module-left">
                     <h1>Scientific Research & Data</h1>
                 </div>
-            </a>
+        </a>
         </div>
-        <hr>
         <footer>
-            <div class="aboutus">
-                <h1>about us</h1>
+            
+                            <!-- About Us Section -->
+            <div class="about-us" style="padding: 3rem; backdrop-filter: blur(1px); color: white; font-family: 'Segoe UI', sans-serif;">
+                <h2 style="text-align: center; font-size: 2rem; margin-bottom: 2rem;">About Us</h2>
+            
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem;">
+                <div style="flex: 1 1 100%; max-width: 800px;">
+                    <p style="font-size: 1.1rem; line-height: 1.6;">
+                    <strong>spAce-Z</strong> is a collaborative space exploration platform developed as part of a team project by <strong>Purandhar, Lokesh, and Balu</strong>. The platform is designed to make space data more accessible, interactive, and meaningful for researchers, students, and enthusiasts alike.
+                    </p>
+                </div>
+            
+                <div style="flex: 1 1 45%;">
+                    <h3 style="font-size: 1.5rem;">Project Vision</h3>
+                    <p>Our goal is to create a unified interface where users can explore and interact with real scientific data from NASA and other trusted space research institutions. By combining visualization, search, and educational tools, spAce-Z brings the cosmos closer to everyone.</p>
+                </div>
+            
+                <div style="flex: 1 1 45%;">
+                    <h3 style="font-size: 1.5rem;">What We Offer</h3>
+                    <ul style="line-height: 1.8;">
+                        <li><strong>Astronomy & Imagery:</strong> Explore NASA's APOD, image/video libraries, and sky imagery tools</li>
+                        <li><strong>Space Objects & Events:</strong> Discover planets, stars, galaxies, and celestial events</li>
+                        <li><strong>Missions & Data Repositories:</strong> Access data from NASA missions and archives</li>
+                        <li><strong>Scientific Research & Data:</strong> Find research, exoplanet archives, HEASARC, and PDS resources</li>
+                    </ul>
+                </div>
+            
+                <div style="flex: 1 1 45%;">
+                    <h3 style="font-size: 1.5rem;">Technologies Used</h3>
+                    <ul style="line-height: 1.8;">
+                    <li>Node.js & Express for server-side development</li>
+                    <li>EJS for dynamic views</li>
+                    <li>Three.js for 3D space visualizations</li>
+                    <li>Axios & Cheerio for API integration</li>
+                    <li>NASA APIs & archives for real data</li>
+                    </ul>
+                </div>
+            
+                <div style="flex: 1 1 45%;">
+                    <h3 style="font-size: 1.5rem;">Our Belief</h3>
+                    <p>We believe in the power of open science and technology to inspire curiosity and expand knowledge. spAce-Z is our contribution toward that goal.</p>
+                </div>
+                </div>
             </div>
         </footer>
     <!-- Load Three.js first -->

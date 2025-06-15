@@ -81,7 +81,7 @@ header {
 }
 .module:hover {
     padding: 1.2rem 2.2rem;
-    box-shadow: 0 0 25px rgba(234, 0, 255, 0.8);
+    box-shadow: 0 0 25px #E4FBFF;
     font-size: 1.05em;
     transition: all 0.4s ease;
     backdrop-filter: blur(0.5px);
@@ -96,7 +96,7 @@ header {
 }
 .module:hover h1{
     color: aliceblue;
-    text-shadow: 2px 2px 8px rgba(246, 143, 255, 0.8);
+    text-shadow: 2px 2px 8px #7868E6;
     margin: 0;
     font-size: 1.8em;
     cursor: pointer;
@@ -121,14 +121,6 @@ hr {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     margin: 40px 0;
 }
-.aboutus {
-    text-align: center;
-    padding: 40px 0;
-}
-.aboutus h1 {
-    color: aliceblue;
-    margin: 0;
-}
 
 /* Common styles to be animated */
 .module {
@@ -149,4 +141,30 @@ hr {
 }
 .module-right {
     transform: translateX(100px);
+}
+
+.m-title {
+    text-align: center;
+    padding: 40px 0;
+    font-size: 5rem;
+    color: aliceblue;
+    text-shadow: 0 0 5px #E4FBFF;
+}
+.m-title h1 {
+    color: #ffffff;
+    text-shadow: 2px 2px 10px #E4FBFF;
+    margin: 0;
+}
+.m-title p {
+    color: aliceblue;
+    text-shadow: 0 0 5px #E4FBFF;
+    font-size: 2rem;
+}
+.m-title:hover {
+    text-align: center;
+    padding: 40px 0;
+    font-size: 5rem;
+    color: aliceblue;
+    text-shadow: 0 0 5px #E4FBFF;
+    cursor: pointer;
 }

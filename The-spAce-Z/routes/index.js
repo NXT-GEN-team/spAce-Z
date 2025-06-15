@@ -21,118 +21,6 @@ router.get('/missions', (req, res) => {
   res.render('missions/index');
 });
 
-router.get('/earth', (req, res) => {
-  res.render('earth/index');
-});
-
-// earth/modis
-router.get('/earth/modis', async (req, res) => {
-  const { product, lat, lon, date } = req.query;
-
-  // Render form if no parameters are provided
-  if (!product && !lat && !lon && !date) {
-    return res.render('earth/modis', {
-      product: 'MOD09A1',
-      lat: '',
-      lon: '',
-      date: new Date().toISOString().split('T')[0],
-      data: null,
-      error: null,
-    });
-  }
-
-  try {
-    // Convert date YYYY-MM-DD to MODIS date format AYyyyDdd
-    const startDate = new Date(date);
-    const startOfYear = new Date(startDate.getFullYear(), 0, 0);
-    const diff = startDate.getTime() - startOfYear.getTime();
-    const oneDay = 1000 * 60 * 60 * 24;
-    const dayOfYear = Math.floor(diff / oneDay);
-    const paddedDay = String(dayOfYear).padStart(3, '0');
-    const modisDate = `A${startDate.getFullYear()}${paddedDay}`;
-    
-    const apiUrl = 'https://modis.ornl.gov/cgi-bin/MODIS/global/subset.pl';
-
-    const response = await axios.get(apiUrl, {
-      params: {
-        product,
-        latitude: lat,
-        longitude: lon,
-        startDate: modisDate,
-        endDate: modisDate,
-        kmAboveBelow: 1,
-        kmLeftRight: 1,
-      },
-    });
-
-    const responseData = response.data;
-    const lines = responseData.split('\n');
-
-    // Check for API-level errors in the response text
-    const errorLine = lines.find(line => line.toLowerCase().includes('error'));
-    if (errorLine) {
-      throw new Error(errorLine);
-    }
-
-    // Find the start of the data section
-    const dataStartIndex = lines.findIndex(line => line.includes('band,value'));
-    if (dataStartIndex === -1) {
-      // If no data header, assume no data found
-      return res.render('earth/modis', {
-        product,
-        lat,
-        lon,
-        date,
-        data: { subset: [] }, // To show "No data found" message
-        error: null,
-      });
-    }
-
-    const dataLines = lines.slice(dataStartIndex + 1);
-    const subset = [];
-    const bandData = {};
-
-    dataLines.forEach(line => {
-      if (!line.trim()) return;
-      const parts = line.split(',');
-      if (parts.length >= 4) { // x,y,band,value,...
-        const band = parts[2].replace(/"/g, '').trim();
-        const value = parseFloat(parts[3]);
-        if (!isNaN(value)) {
-          if (!bandData[band]) {
-            bandData[band] = [];
-          }
-          bandData[band].push(value);
-        }
-      }
-    });
-
-    for (const band in bandData) {
-      subset.push({ band, data: bandData[band] });
-    }
-
-    res.render('earth/modis', {
-      product,
-      lat,
-      lon,
-      date,
-      data: { subset },
-      error: null,
-    });
-
-  } catch (err) {
-    console.error('Failed to fetch MODIS data:', err.message);
-    res.render('earth/modis', {
-      product: product || 'MOD09A1',
-      lat: lat || '',
-      lon: lon || '',
-      date: date || new Date().toISOString().split('T')[0],
-      data: null,
-      error: `Failed to fetch MODIS data. ${err.message}`,
-    });
-  }
-});
-
 router.get('/research', (req, res) => {
   res.render('research/index');
 });
@@ -159,6 +47,7 @@ router.get('/astro/apod', async (req, res) => {
     });
   }
 });
+
 // epic
 router.get('/astro/epic', async (req, res) => {
   try {
@@ -444,7 +333,6 @@ router.get('/space-objects/ssc', async (req, res) => {
   }
 });
 
-
 // mars
 router.get('/missions/mars', async (req, res) => {
   const rover = req.query.rover || 'curiosity';
@@ -502,45 +390,8 @@ router.get('/missions/techport', async (req, res) => {
   }
 });
 
-// // exo
-// router.get('/missions/exo', async (req, res) => {
-//   const year = parseInt(req.query.year) || 2020;
-
-//   const baseUrl = 'https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI';
-//   const params = new URLSearchParams({
-//     table: 'ps',  // ✅ Correct table name
-//     select: 'pl_name,hostname,disc_year,pl_rade,pl_bmasse,st_dist,st_teff',
-//     where: `disc_year>=${year}`,
-//     format: 'json'
-//   });
-
-//   const fullUrl = `${baseUrl}?${params.toString()}`;
-//   console.log('🔭 Fetching Exoplanet data from:', fullUrl);
-
-//   try {
-//     const response = await axios.get(fullUrl);
-//     const planets = Array.isArray(response.data) ? response.data : [];
-
-//     console.log(`🪐 Found ${planets.length} planets discovered since ${year}`);
-
-//     res.render('missions/exo', {
-//       planets,
-//       year,
-//       error: planets.length === 0 ? `No exoplanets found for ${year} or later.` : null
-//     });
-//   } catch (err) {
-//     console.error('🚨 Exoplanet API Error:', err.message);
-//     res.render('missions/exo', {
-//       planets: [],
-//       year,
-//       error: 'Failed to fetch Exoplanet data. Try again later.'
-//     });
-//   }
-// });
-
-
 // power
-router.get('/earth/power', async (req, res) => {
+router.get('/missions/power', async (req, res) => {
   const lat = parseFloat(req.query.lat) || 0;
   const lon = parseFloat(req.query.lon) || 0;
   const start = req.query.start?.replace(/-/g, '') || '20250101';
@@ -561,85 +412,15 @@ router.get('/earth/power', async (req, res) => {
     const resp = await axios.get(url, { params });
     const json = resp.data.properties.parameter;
     const dates = Object.keys(json.ALLSKY_SFC_SW_DWN);
-    res.render('earth/power', { lat, lon, start: req.query.start, end: req.query.end, data: json, dates, error: null });
+    res.render('missions/power', { lat, lon, start: req.query.start, end: req.query.end, data: json, dates, error: null });
   } catch (err) {
     console.error('POWER API error:', err.message);
-    res.render('earth/power', { lat, lon, start: req.query.start, end: req.query.end, data: null, dates: [], error: 'Failed to fetch POWER data' });
+    res.render('missions/power', { lat, lon, start: req.query.start, end: req.query.end, data: null, dates: [], error: 'Failed to fetch POWER data' });
   }
 });
 
-// MODIS Subset Route
-router.get('/earth/modis', async (req, res) => {
-  const lat = parseFloat(req.query.lat) || 0;
-  const lon = parseFloat(req.query.lon) || 0;
-  const product = req.query.product || 'MOD13Q1';
-  const date = req.query.date || new Date().toISOString().split('T')[0];
 
-  // MODIS Julian format AYYYYDDD
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const start = new Date(year, 0, 0);
-  const diff = d - start;
-  const j = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const modisDate = `A${year}${j.toString().padStart(3, '0')}`;
-
-  const url = `https://modis.ornl.gov/rst/api/v1/${product}/subset`;
-  const params = {
-    latitude: lat,
-    longitude: lon,
-    startDate: modisDate,
-    endDate: modisDate,
-    kmAboveBelow: 1,
-    kmLeftRight: 1
-  };
-
-  try {
-    const response = await axios.get(url, { params });
-    res.render('earth/modis', {
-      lat, lon, date, product,
-      data: response.data,
-      error: null
-    });
-  } catch (err) {
-    console.error('MODIS API error:', err.response?.data || err.message);
-    res.render('earth/modis', {
-      lat, lon, date, product,
-      data: null,
-      error: 'Failed to fetch MODIS data'
-    });
-  }
-});
-
-// SkyView route
-router.get('/earth/skyview', async (req, res) => {
-  const target = req.query.target || 'M51';
-  const survey = req.query.survey || 'DSS';
-  const pixels = req.query.pixels || '600';
-
-  const baseUrl = 'https://skyview.gsfc.nasa.gov/current/cgi/runquery.pl';
-  const query = `?Position=${encodeURIComponent(target)}&Survey=${encodeURIComponent(survey)}&Return=URL&Sampler=Clip&Pixels=${pixels},${pixels}&Deedger=Clip&Scaling=Log&Return=PNG`;
-
-  let imageUrl = null;
-  let error = null;
-
-  try {
-    const response = await axios.get(baseUrl + query);
-    const lines = response.data.split('\n');
-    const imageLine = lines.find(line => line.trim().endsWith('.png'));
-    if (imageLine) {
-      imageUrl = imageLine.trim();
-    } else {
-      error = '❌ No PNG image found. Try a different object/survey.';
-    }
-  } catch (err) {
-    console.error('SkyView fetch error:', err.message);
-    error = '🚨 Error fetching SkyView image. Please try again later.';
-  }
-
-  res.render('earth/skyview', { target, survey, pixels, imageUrl, error });
-});
-
-// /earth/pds route
+// /research/pds route
 router.get('/research/pds', async (req, res) => {
   const { query } = req.query;
   let results = [], error = null;
