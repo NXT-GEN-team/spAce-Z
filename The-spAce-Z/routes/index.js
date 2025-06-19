@@ -74,50 +74,44 @@ router.get('/astro/apod', async (req, res) => {
   }
 });
 
-// epic
+// EPIC - Earth Polychromatic Imaging Camera
 router.get('/astro/epic', async (req, res) => {
-  try {
-    const date = req.query.date || new Date().toISOString().split('T')[0]; // today's date by default
+  const NASA_API_KEY = process.env.NASA_API_KEY;
+  const dateInput = req.query.date || new Date().toISOString().split('T')[0]; // default to today
+  let images = [];
+  let message = null;
+  let error = null;
 
-    // Get image metadata for that date
-    const response = await axios.get(`https://api.nasa.gov/EPIC/api/natural/date/${date}?api_key=${NASA_API_KEY}`);
+  try {
+    const url = `https://api.nasa.gov/EPIC/api/natural/date/${dateInput}?api_key=${NASA_API_KEY}`;
+    const response = await axios.get(url);
     const imageData = response.data;
 
     if (!imageData || imageData.length === 0) {
-      return res.render('astro/epic', {
-        images: [],
-        message: "No EPIC images available for today.",
-        error: null
+      message = `No EPIC images available for ${dateInput}.`;
+    } else {
+      images = imageData.slice(0, 5).map(img => {
+        const [year, month, day] = img.date.split(" ")[0].split("-");
+        return {
+          caption: img.caption,
+          date: img.date,
+          url: `https://epic.gsfc.nasa.gov/archive/natural/${year}/${month}/${day}/jpg/${img.image}.jpg`
+        };
       });
     }
-
-    // Build full image URLs
-    const formattedImages = imageData.slice(0, 5).map(img => {
-      const dateParts = img.date.split(" ")[0].split("-");
-      const [year, month, day] = dateParts;
-      const imageUrl = `https://epic.gsfc.nasa.gov/archive/natural/${year}/${month}/${day}/jpg/${img.image}.jpg`;
-      return {
-        caption: img.caption,
-        date: img.date,
-        url: imageUrl
-      };
-    });
-
-    res.render('astro/epic', {
-      images: formattedImages,
-      message: null,
-      error: null
-    });
-
   } catch (err) {
-    console.error("Failed to fetch EPIC images:", err.message);
-    res.render('astro/epic', {
-      images: [],
-      message: null,
-      error: "Failed to fetch EPIC images. Please try again later."
-    });
+    console.error(`EPIC API error for date ${dateInput}:`, err.message);
+    error = `Failed to fetch EPIC data for ${dateInput}. Please try a different date.`;
   }
+
+  res.render('astro/epic', {
+    images,
+    message,
+    error,
+    selectedDate: dateInput
+  });
 });
+
 
 // nasa image and video library
 router.get('/astro/imgvid', async (req, res) => {
