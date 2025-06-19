@@ -5,25 +5,51 @@ require('dotenv').config(); // Load .env file
 
 const NASA_API_KEY = process.env.NASA_API_KEY;
 
+const admin = require('../firebaseConfig');
+
+function checkAuth(req, res, next) {
+  const sessionCookie = req.cookies.session || '';
+  admin.auth().verifySessionCookie(sessionCookie, true)
+    .then(decoded => {
+      req.user = decoded;
+      next();
+    })
+    .catch(() => res.redirect('/login'));
+}
+
+
 router.get('/', (req, res) => {
-  res.render('homepage');
+  const sessionCookie = req.cookies?.session;
+  if (!sessionCookie) return res.render('homepage', { user: null });
+
+  const admin = require('../firebaseConfig');
+  admin.auth().verifySessionCookie(sessionCookie, true)
+    .then((decoded) => {
+      res.render('homepage', { user: decoded });
+    })
+    .catch(() => {
+      res.render('homepage', { user: null });
+    });
 });
 
-router.get('/astro', (req, res) => {
+
+router.get('/astro', checkAuth, (req, res) => {
   res.render('astro/index');
 });
 
-router.get('/space-objects', (req, res) => {
+router.get('/space-objects', checkAuth, (req, res) => {
   res.render('space-objects');
 });
 
-router.get('/missions', (req, res) => {
+router.get('/missions', checkAuth, (req, res) => {
   res.render('missions/index');
 });
 
-router.get('/research', (req, res) => {
+router.get('/research', checkAuth, (req, res) => {
   res.render('research/index');
 });
+
+
 
 // apod
 router.get('/astro/apod', async (req, res) => {

@@ -13,6 +13,40 @@
                 <p>Explore the news amoung the stars</p>
         </div>
     </header>
+
+    <div class="user-menu">
+        <div class="dropdown">
+            <button class="dropdown-button">
+                <img src="/profile.svg" alt="Profile" class="profile-icon">
+            </button>
+            <div class="dropdown-content">
+            <% if (user) { %>
+                <p><%= user.email %></p>
+                <a href="/logout">Logout</a>
+            <% } else { %>
+                <a href="/login">Login</a>
+                <a href="/register">Sign Up</a>
+            <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const button = document.querySelector('.dropdown-button');
+        const content = document.querySelector('.dropdown-content');
+
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+            content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown')) {
+                content.style.display = 'none';
+            }
+        });
+    </script>
+
     <div class="content">
         <a href="/astro" style="text-decoration: none; color: inherit;">
                 <div class="module module-left">

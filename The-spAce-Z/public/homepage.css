@@ -190,3 +190,92 @@ hr {
     transform: translateY(-2px);
     box-shadow: 0 0 15px rgba(0, 208, 255, 0.3);
 }
+
+/* dropdown user menue */
+
+.user-menu {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .dropdown-button {
+            background: transparent;
+            color: aliceblue;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px rgb(0, 208, 255);
+            font-size: 1.2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .dropdown-button:hover {
+            background: rgba(234, 0, 255, 0.2);
+            border-color: rgb(234, 0, 255);
+            box-shadow: 0 0 15px rgba(234, 0, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 0.5rem;
+            background: rgba(0, 0, 0, 0.681);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            min-width: 200px;
+            box-shadow: 0 0 25px rgba(234, 0, 255, 0.2);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .dropdown-content p {
+            color: aliceblue;
+            margin: 0 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-shadow: 0 0 5px rgb(0, 208, 255);
+        }
+
+        .dropdown-content a {
+            color: aliceblue;
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px rgb(0, 208, 255);
+        }
+
+        .dropdown-content a:hover {
+            color: rgb(0, 208, 255);
+            transform: translateX(5px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-icon {
+            width: 24px;
+            height: 24px;
+            filter: invert(1) brightness(1.5);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-button:hover .profile-icon {
+            filter: invert(1) brightness(1.5) drop-shadow(0 0 5px rgb(0, 208, 255));
+        }
