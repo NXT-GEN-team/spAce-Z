@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-require('dotenv').config(); // Load .env file
-
+require('dotenv').config(); 
+const cheerio = require('cheerio');
 const NASA_API_KEY = process.env.NASA_API_KEY;
 
 const admin = require('../firebaseConfig');
@@ -51,7 +51,7 @@ router.get('/research', checkAuth, (req, res) => {
 
 
 
-// apod
+// ----------------------------------------------------------apod------------------------------------------------------------------------
 router.get('/astro/apod', async (req, res) => {
   try {
     const date = req.query.date || new Date().toISOString().split('T')[0];
@@ -74,10 +74,10 @@ router.get('/astro/apod', async (req, res) => {
   }
 });
 
-// EPIC - Earth Polychromatic Imaging Camera
+// ----------------------------------------EPIC - Earth Polychromatic Imaging Camera-----------------------------------------------------
 router.get('/astro/epic', async (req, res) => {
   const NASA_API_KEY = process.env.NASA_API_KEY;
-  const dateInput = req.query.date || new Date().toISOString().split('T')[0]; // default to today
+  const dateInput = req.query.date || new Date().toISOString().split('T')[0];
   let images = [];
   let message = null;
   let error = null;
@@ -113,9 +113,9 @@ router.get('/astro/epic', async (req, res) => {
 });
 
 
-// nasa image and video library
+// ----------------------------------------------nasa image and video library------------------------------------------------------------
 router.get('/astro/imgvid', async (req, res) => {
-  const searchQuery = req.query.q || 'galaxy'; // Default search term if none provided
+  const searchQuery = req.query.q || 'galaxy';
   try {
     console.log('Searching NASA API with query:', searchQuery);
     
@@ -182,7 +182,7 @@ router.get('/astro/imgvid', async (req, res) => {
   }
 });
 
-// neow
+// ------------------------------------------------------------neow----------------------------------------------------------------------
 router.get('/space-objects/neow', async (req, res) => {
   const date = req.query.date || new Date().toISOString().split('T')[0];
 
@@ -232,7 +232,7 @@ router.get('/space-objects/neow', async (req, res) => {
   }
 });
 
-// donki
+// --------------------------------------------------------------------donki-------------------------------------------------------------
 router.get('/space-objects/donki', async (req, res) => {
   const start = req.query.start || new Date().toISOString().split('T')[0];
   const end = req.query.end || new Date().toISOString().split('T')[0];
@@ -353,7 +353,7 @@ router.get('/space-objects/ssc', async (req, res) => {
   }
 });
 
-// mars
+// --------------------------------------------------------------------mars---------------------------------------------------------------
 router.get('/missions/mars', async (req, res) => {
   const rover = req.query.rover || 'curiosity';
   const sol = req.query.sol || 1000;
@@ -385,7 +385,7 @@ router.get('/missions/mars', async (req, res) => {
   }
 });
 
-// techport
+// ----------------------------------------------------------techport---------------------------------------------------------------------
 router.get('/missions/techport', async (req, res) => {
   const id = req.query.id;
 
@@ -410,7 +410,7 @@ router.get('/missions/techport', async (req, res) => {
   }
 });
 
-// power
+// -------------------------------------------------------------power--------------------------------------------------------------------
 router.get('/missions/power', async (req, res) => {
   const lat = parseFloat(req.query.lat) || 0;
   const lon = parseFloat(req.query.lon) || 0;
@@ -440,7 +440,7 @@ router.get('/missions/power', async (req, res) => {
 });
 
 
-// /research/pds route
+// ------------------------------------------------------------pds------------------------------------------------------------------------
 router.get('/research/pds', async (req, res) => {
   const { query } = req.query;
   let results = [], error = null;
@@ -466,7 +466,7 @@ router.get('/research/pds', async (req, res) => {
 });
 
 
-//exoplanets
+//--------------------------------------------------------exoplanets---------------------------------------------------------------------
 router.get('/research/exoplanets', async (req, res) => {
   const { pl_name, hostname, disc_year, disc_method } = req.query;
 
@@ -477,7 +477,6 @@ router.get('/research/exoplanets', async (req, res) => {
   if (disc_year) conditions.push(`disc_year = ${disc_year}`);
   if (disc_method) conditions.push(`discoverymethod LIKE '%${disc_method}%'`);
 
-  // Oracle SQL: LIMIT is not allowed, use ROWNUM instead
   conditions.push('ROWNUM <= 20');
 
   const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
@@ -496,9 +495,9 @@ router.get('/research/exoplanets', async (req, res) => {
   }
 });
 
-const cheerio = require('cheerio');
 
-// HEASARC HTML scraping route
+
+// ---------------------------------------------HEASARC HTML scraping route--------------------------------------------------------------
 router.get('/research/heasarc', async (req, res) => {
   const { table = 'rosmaster', ra, dec, radius = '0.1' } = req.query;
 
@@ -525,10 +524,8 @@ router.get('/research/heasarc', async (req, res) => {
     const response = await axios.get(apiUrl, { timeout: 15000 });
     const $ = cheerio.load(response.data);
 
-    // Extract the first row of data from the HTML response
     const dataCells = $("td#tddata").toArray().map(td => $(td).text().trim().replace(/\s+/g, ' '));
 
-    // Safely extract expected fields by position (manually mapped from postman-output.txt)
     const result = {
       name: dataCells[0] || "Unknown",
       obsid: dataCells[1] || "N/A",

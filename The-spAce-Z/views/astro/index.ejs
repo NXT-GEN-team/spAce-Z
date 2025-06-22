@@ -42,7 +42,7 @@
     <div class="content">
         <a href="/astro/apod" style="text-decoration: none; color: inherit;">
             <div class="module module-left" onclick="toggleModule(this)">
-                <h1>Astronomy Picture of the Day (APOD)</h1>
+                <h1> APOD (Astronomy Picture of the Day)</h1>
             </div>
         </a>
         <a href="/astro/imgvid" style="text-decoration: none; color: inherit;">
@@ -58,16 +58,16 @@
         </a>
     </div>
 
-    <!-- Load Three.js first -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Then load our starfield script -->
+
     <script src="/starfield.js"></script>
     <script>
         function toggleModule(module) {
             module.classList.toggle('active');
         }
 
-        // Add intersection observer for animations
+
         const modules = document.querySelectorAll('.module');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {

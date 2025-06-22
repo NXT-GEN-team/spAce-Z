@@ -139,7 +139,7 @@
   </header>
 
   <div class="form-container">
-    <form onsubmit="registerUser(event)">
+    <form onsubmit="registerUser(event)" method="POST">
       <div class="input-field">
         <label>Email</label>
         <input type="email" id="email" required />
@@ -153,6 +153,8 @@
     <a href="/login" class="back-link">Already have an account? Login here</a>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="/starfield.js"></script>
   <!-- Firebase Setup -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -173,7 +175,7 @@
         await firebase.auth().createUserWithEmailAndPassword(email, password);
         const successDiv = document.createElement('div');
         successDiv.className = 'success';
-        successDiv.textContent = 'Registration successful! Redirecting to login...';
+        successDiv.textContent = 'Registration successful! going back to login...';
         document.querySelector('.form-container').insertBefore(successDiv, document.querySelector('.back-link'));
         setTimeout(() => {
           window.location.href = "/login";

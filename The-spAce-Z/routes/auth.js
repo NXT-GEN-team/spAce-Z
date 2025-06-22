@@ -2,17 +2,17 @@ const express = require('express');
 const router = express.Router();
 const admin = require('../firebaseConfig');
 
-// GET: Login Page
+// Login Page
 router.get('/login', (req, res) => {
   res.render('auth/login');
 });
 
-// GET: Register Page
+// Register Page
 router.get('/register', (req, res) => {
   res.render('auth/register');
 });
 
-// POST: Firebase Session Login
+// Firebase Session Login
 router.post('/sessionLogin', async (req, res) => {
   const idToken = req.body.token;
   const expiresIn = 60 * 60 * 24 * 5 * 1000;
@@ -27,7 +27,7 @@ router.post('/sessionLogin', async (req, res) => {
   }
 });
 
-// GET: Logout
+// Logout
 router.get('/logout', (req, res) => {
   res.clearCookie('session');
   res.redirect('/login');

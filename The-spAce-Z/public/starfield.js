@@ -1,4 +1,3 @@
-// Wait for Three.js to be loaded
 window.addEventListener('load', () => {
     if (typeof THREE === 'undefined') {
         console.error('Three.js is not loaded!');
@@ -32,7 +31,6 @@ window.addEventListener('load', () => {
 
         init() {
             try {
-                // Setup renderer
                 this.renderer.setSize(window.innerWidth, window.innerHeight);
                 this.renderer.setPixelRatio(window.devicePixelRatio);
                 document.body.appendChild(this.renderer.domElement);
@@ -42,10 +40,10 @@ window.addEventListener('load', () => {
                 this.renderer.domElement.style.zIndex = '-1';
                 this.renderer.domElement.style.background = 'black';
 
-                // Create stars
+                
                 const starGeometry = new THREE.BufferGeometry();
                 
-                // Create a custom shader material for round stars
+                
                 const starMaterial = new THREE.ShaderMaterial({
                     uniforms: {
                         time: { value: 0 }
@@ -82,12 +80,12 @@ window.addEventListener('load', () => {
                     const z = (Math.random() - 0.5) * 2000;
                     starVertices.push(x, y, z);
 
-                    // Add some color variation
+                    
                     const color = new THREE.Color();
                     color.setHSL(Math.random() * 0.1 + 0.5, 0.8, Math.random() * 0.2 + 0.8);
                     starColors.push(color.r, color.g, color.b);
 
-                    // Add size variation
+                    
                     starSizes.push(Math.random() * 1.5 + 0.5);
                 }
 
@@ -98,15 +96,15 @@ window.addEventListener('load', () => {
                 this.stars = new THREE.Points(starGeometry, starMaterial);
                 this.scene.add(this.stars);
 
-                // Position camera
+                
                 this.camera.position.z = 1000;
 
-                // Add event listeners
+                
                 document.addEventListener('mousemove', this.onDocumentMouseMove.bind(this));
                 window.addEventListener('resize', this.onWindowResize.bind(this));
                 window.addEventListener('scroll', this.onDocumentScroll.bind(this));
 
-                // Start animation
+                
                 this.animate();
                 console.log('Starfield initialized successfully');
             } catch (error) {
@@ -135,26 +133,26 @@ window.addEventListener('load', () => {
             try {
                 requestAnimationFrame(this.animate.bind(this));
 
-                // Mouse movement effect
+                
                 this.targetX = this.mouseX * 0.001;
                 this.targetY = this.mouseY * 0.001;
 
-                // Scroll effect
+                
                 this.scrollY += (this.targetScrollY - this.scrollY) * 0.0001;
 
-                // Apply rotations
+                
                 this.stars.rotation.y += 0.0005;
                 this.stars.rotation.x += 0.0005;
 
-                // Combine mouse and scroll effects
+                
                 this.stars.rotation.x += (this.targetY - this.stars.rotation.x) * 0.05;
                 this.stars.rotation.y += (this.targetX - this.stars.rotation.y) * 0.05;
                 
-                // Add scroll-based rotation
+                
                 this.stars.rotation.x += this.scrollY;
                 this.stars.rotation.y += this.scrollY * 0.5;
 
-                // Update shader time uniform for twinkling effect
+                
                 if (this.stars.material.uniforms) {
                     this.stars.material.uniforms.time.value += 0.01;
                 }
@@ -166,7 +164,7 @@ window.addEventListener('load', () => {
         }
     }
 
-    // Initialize starfield
+    
     try {
         new Starfield();
     } catch (error) {

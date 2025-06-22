@@ -221,7 +221,7 @@
   <% } %>
 
   <script>
-    // Add animation for cards
+
     const cards = document.querySelectorAll('.photo-card');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -236,7 +236,7 @@
       observer.observe(card);
     });
 
-    // Set the selected rover in the dropdown
+
     document.querySelector('select[name="rover"]').value = '<%= rover || "curiosity" %>';
   </script>
 </body>

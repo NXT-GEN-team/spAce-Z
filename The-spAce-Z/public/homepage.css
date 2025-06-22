@@ -18,22 +18,7 @@ header {
     justify-content: center;
     align-items: center;
 }
-.b1,
-.b2,
-.b3 {
-    position: absolute;
-    object-fit: cover;
-    z-index: -1;
-}
-.b1 {
-    transform: translateZ(-20px) scale(2);
-}
-.b2 {
-    transform: translateZ(-7px);
-}
-.b3 {
-    transform: translateZ(-1px);
-}
+/* ------------------------------------------titles----------------------------------------------------- */
 .title {
     text-align: center;
     padding: 40px 0;
@@ -56,6 +41,7 @@ header {
     color: aliceblue;
     text-shadow: 0 0 5px rgb(0, 208, 255);
 }
+/* ----------------------------------------------modules------------------------------------------------- */
 .content {
     display: flex;
     flex-direction: column;
@@ -90,7 +76,6 @@ header {
     padding: 0.5rem 1rem;
     box-shadow: 0 0 10px rgba(246, 143, 255, 0.8);
     font-size: 1.005em;
-    /* transition: all 0.2s ease; */
     transition: all 0.2s ease-in-out;
     backdrop-filter: blur(0.5px);
 }
@@ -122,27 +107,24 @@ hr {
     margin: 40px 0;
 }
 
-/* Common styles to be animated */
 .module {
     opacity: 0;
     transform: translateX(0);
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-/* When in view */
 .module.in-view {
     opacity: 1;
     transform: translateX(0);
 }
 
-/* Direction-specific off-screen positions */
 .module-left {
     transform: translateX(-100px);
 }
 .module-right {
     transform: translateX(100px);
 }
-
+/* ---------------------------------------------main title---------------------------------------------- */
 .m-title {
     text-align: center;
     padding: 40px 0;
@@ -168,7 +150,7 @@ hr {
     text-shadow: 0 0 5px #E4FBFF;
     cursor: pointer;
 }
-
+/* --------------------------------------------exit button------------------------------------------------ */
 .exit-button {
     position: fixed;
     top: 20px;
@@ -191,14 +173,14 @@ hr {
     box-shadow: 0 0 15px rgba(0, 208, 255, 0.3);
 }
 
-/* dropdown user menue */
+/*-------------------------------------------------- dropdown user menue ---------------------------------------------------------------*/
 
 .user-menu {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
 
 .dropdown-button {
     background: transparent;
