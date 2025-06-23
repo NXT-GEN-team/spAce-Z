@@ -499,12 +499,12 @@ router.get('/research/exoplanets', async (req, res) => {
 
 // ---------------------------------------------HEASARC HTML scraping route--------------------------------------------------------------
 router.get('/research/heasarc', async (req, res) => {
-  const { table = 'rosmaster', ra, dec, radius = '0.1' } = req.query;
+  const { table = 'rosmaster', ra, dec, radius = '0.2' } = req.query;
 
   console.log("🛰️ HEASARC Route hit with query:", req.query);
 
   if (!ra || !dec) {
-    return res.render('research/heasarc', { results: undefined });
+    return res.render('research/heasarc', { results: undefined, error: "Missing RA/Dec." });
   }
 
   const queryParams = new URLSearchParams({
@@ -524,19 +524,32 @@ router.get('/research/heasarc', async (req, res) => {
     const response = await axios.get(apiUrl, { timeout: 15000 });
     const $ = cheerio.load(response.data);
 
-    const dataCells = $("td#tddata").toArray().map(td => $(td).text().trim().replace(/\s+/g, ' '));
+    // Select the first actual results table (excluding layout tables)
+    const resultTable = $('table.thinbordertable').first();
+    const rows = resultTable.find('tr').slice(1); // skip header
 
-    const result = {
-      name: dataCells[0] || "Unknown",
-      obsid: dataCells[1] || "N/A",
-      ra: dataCells[2] || "N/A",
-      dec: dataCells[3] || "N/A",
-      start: dataCells[4] || "N/A",
-      stop: dataCells[5] || "N/A"
-    };
+    const results = [];
 
-    console.log("✅ Extracted result:", result);
-    res.render('research/heasarc', { results: [result] });
+    rows.each((i, row) => {
+      const cols = $(row).find('td').map((_, td) => $(td).text().trim()).get();
+      if (cols.length >= 6) {
+        results.push({
+          name: cols[0],
+          obsid: cols[1],
+          ra: cols[2],
+          dec: cols[3],
+          start: cols[4],
+          stop: cols[5]
+        });
+      }
+    });
+
+    if (results.length === 0) {
+      return res.render('research/heasarc', { results: [], error: "No results found or data not available." });
+    }
+
+    console.log("✅ Extracted results:", results);
+    res.render('research/heasarc', { results, error: null });
 
   } catch (err) {
     console.error("❌ HEASARC HTML parse error:", err.message);
