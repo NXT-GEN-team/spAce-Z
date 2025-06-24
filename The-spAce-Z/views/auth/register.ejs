@@ -5,6 +5,7 @@
   <title>Register - spAce-Z</title>
   <link rel="stylesheet" href="/homepage.css">
   <style>
+    /* Same styling as before (unchanged) */
     body {
       background: #000;
       color: aliceblue;
@@ -57,8 +58,7 @@
       text-align: left;
     }
 
-    input[type="email"],
-    input[type="password"] {
+    input {
       width: 100%;
       padding: 0.8rem;
       border-radius: 8px;
@@ -70,8 +70,7 @@
       box-sizing: border-box;
     }
 
-    input[type="email"]:focus,
-    input[type="password"]:focus {
+    input:focus {
       outline: none;
       border-color: rgb(0, 208, 255);
       box-shadow: 0 0 10px rgba(0, 208, 255, 0.3);
@@ -141,6 +140,10 @@
   <div class="form-container">
     <form onsubmit="registerUser(event)" method="POST">
       <div class="input-field">
+        <label>Username</label>
+        <input type="text" id="username" required />
+      </div>
+      <div class="input-field">
         <label>Email</label>
         <input type="email" id="email" required />
       </div>
@@ -155,28 +158,37 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="/starfield.js"></script>
-  <!-- Firebase Setup -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script>
     const firebaseConfig = {
-        apiKey: "AIzaSyCjxhXQELOUVV5qAVShNwWGbb_DnkPBtOE",
-        authDomain: "space-z-f6b47.firebaseapp.com",
-        projectId: "space-z-f6b47"
+      apiKey: "AIzaSyCjxhXQELOUVV5qAVShNwWGbb_DnkPBtOE",
+      authDomain: "space-z-f6b47.firebaseapp.com",
+      projectId: "space-z-f6b47"
     };
     firebase.initializeApp(firebaseConfig);
 
     async function registerUser(event) {
       event.preventDefault();
+      const username = document.getElementById("username").value;
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
       try {
-        await firebase.auth().createUserWithEmailAndPassword(email, password);
+        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        const idToken = await userCredential.user.getIdToken();
+
+        await fetch('/registerUser', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idToken, username })
+        });
+
         const successDiv = document.createElement('div');
         successDiv.className = 'success';
-        successDiv.textContent = 'Registration successful! going back to login...';
+        successDiv.textContent = 'Registration successful! Going to login...';
         document.querySelector('.form-container').insertBefore(successDiv, document.querySelector('.back-link'));
+
         setTimeout(() => {
           window.location.href = "/login";
         }, 2000);

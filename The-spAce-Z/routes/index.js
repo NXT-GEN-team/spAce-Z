@@ -4,8 +4,10 @@ const axios = require('axios');
 require('dotenv').config(); 
 const cheerio = require('cheerio');
 const NASA_API_KEY = process.env.NASA_API_KEY;
-
 const admin = require('../firebaseConfig');
+const { getFirestore } = require('firebase-admin/firestore');
+const db = getFirestore();
+
 
 function checkAuth(req, res, next) {
   const sessionCookie = req.cookies.session || '';
@@ -18,18 +20,28 @@ function checkAuth(req, res, next) {
 }
 
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   const sessionCookie = req.cookies?.session;
   if (!sessionCookie) return res.render('homepage', { user: null });
 
-  const admin = require('../firebaseConfig');
-  admin.auth().verifySessionCookie(sessionCookie, true)
-    .then((decoded) => {
-      res.render('homepage', { user: decoded });
-    })
-    .catch(() => {
-      res.render('homepage', { user: null });
+  try {
+    const decoded = await admin.auth().verifySessionCookie(sessionCookie, true);
+    const uid = decoded.uid;
+
+    const userDoc = await db.collection('users').doc(uid).get();
+    const userData = userDoc.exists ? userDoc.data() : {};
+
+    res.render('homepage', {
+      user: {
+        uid,
+        email: decoded.email,
+        username: userData.username || decoded.email  
+      }
     });
+  } catch (err) {
+    console.error('Session decode failed:', err);
+    res.render('homepage', { user: null });
+  }
 });
 
 
